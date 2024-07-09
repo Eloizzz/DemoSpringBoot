@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-demo( 
+	titrePage=~{:: title}, contenuPage=~{:: main}, ressourcesSupp=~{:: #ressources-css})}">
+<head>
+<!-- Créer comme titre de page -->
+<title>Créer</title>
+<!-- Ajout de CSS demo-form.css -->
+<th:block id="ressources-css">
+	<link rel="stylesheet" data-th-href="@{/css/demo-form.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/demo-error.css}" />
+</th:block>
+</head>
+<body>
+	<main>
+		<!-- Utilisation du fragment formulaire et du fragment fragment-liste-cours-form -->
+		<div
+			data-th-replace="~{fragments/fragment-formateur-detail ::
+			frag-formateur-form('/formateurs/creer', 'Création du formateur', 
+			~{fragments/fragment-liste-cours-form :: frag-liste-cours})}"></div>
+	</main>
+</body>
+</html>
