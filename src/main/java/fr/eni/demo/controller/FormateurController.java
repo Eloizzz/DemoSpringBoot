@@ -33,27 +33,6 @@ public class FormateurController {
 		this.formateurService = formateurService;
 		this.coursService = coursService;
 	}
-	
-	@GetMapping("/creer")
-	public String creerFormateur(Model model) {
-		Formateur formateur = new Formateur();
-		// Ajout de l'instance dans le modèle
-		model.addAttribute("formateur", formateur);
-		return "view-formateur-creer";
-		}
-	
-	// Récupération de l'objet formateur du formulaire
-	// Traçage de la liste des cours associés via Converter
-	// sauvegarde
-	@PostMapping("/creer")
-	public String creerFormateur(@Valid @ModelAttribute("formateur") Formateur formateur, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "view-formateur-creer";
-		} else {
-			formateurService.add(formateur);
-			return "redirect:/formateurs";
-		}
-	}
 
 	@GetMapping
 	public String afficherFormateurs(Model model) {
@@ -76,21 +55,20 @@ public class FormateurController {
 
 	@PostMapping("/detail")
 	public String mettreAJourFormateur(@Valid @ModelAttribute("formateur") Formateur f, BindingResult bindingResult) {
-		
 		if (bindingResult.hasErrors()) {
 			return "view-formateur-detail";
 		} else {
 			System.out.println("Le formateur récupéré depuis le formulaire : ");
-			System.out.println(f);
-			
-			//Sauvegarder les modifications
-			formateurService.update(f);
-			
-			// Redirection l’affichage de tous les formateurs, en appelant la méthode
-			// afficherFormateurs
-			return "redirect:/formateurs";
-		}
+		
+		System.out.println(f);
 
+		// Sauvegarder les modifications
+		formateurService.update(f);
+
+		// Redirection l’affichage de tous les formateurs, en appelant la méthode
+		// afficherFormateurs
+		return "redirect:/formateurs";
+		}
 	}
 
 	// Méthode pour charger la liste des cours en session
@@ -107,6 +85,29 @@ public class FormateurController {
 		long idCours = Long.parseLong(id);
 		formateurService.updateCoursFormateur(email, idCours);
 		return "redirect:/formateurs/detail?email=" + email;
+	}
+
+	// Création d'un nouveau formateur
+	@GetMapping("/creer")
+	public String creerFormateur(Model model) {
+		Formateur formateur = new Formateur();
+		// Ajout de l'instance dans le modèle
+		model.addAttribute("formateur", formateur);
+
+		return "view-formateur-creer";
+	}
+
+	// Récupération de l'objet formateur du formulaire
+	// Traçage de la liste des cours associés via Converter
+	// sauvegarde
+	@PostMapping("/creer")
+	public String creerFormateur(@Valid @ModelAttribute("formateur") Formateur formateur, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "view-formateur-creer";
+		} else {
+			formateurService.add(formateur);
+			return "redirect:/formateurs";
+		}
 	}
 
 }

@@ -14,22 +14,22 @@ public class Formateur implements Serializable {
 	 * Identifiant de l'interface Serializable
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	@NotBlank
-	@Size(min = 4, max = 250, message = "Le nom doit avoir au moins 4 caractères")
+	@Size(min = 4, max=250, message = "Le nom doit avoir au moins 4 caractères")
 	private String nom;
 	
 	@NotBlank
-	@Size(min = 4, max = 250)
+	@Size(min = 4, max=250)
 	private String prenom;
-	
+
 	@NotBlank
 	@Email
-	@Pattern(regexp = "^[\\w-\\.]+@campus-eni.fr$")
+	@Pattern(regexp="^[\\w-\\.]+@campus-eni.fr$")
 	private String email;
-
-	// 1 formateur peut dispenser plusieurs cours
+	
+	//1 formateur peut dispenser plusieurs cours
 	private List<Cours> listeCours;
+
 
 	public Formateur() {
 		listeCours = new ArrayList<>();

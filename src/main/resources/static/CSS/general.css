@@ -67,6 +67,5 @@ main h1 {
 	margin: auto;
 	text-align: center;
 }
-#nav-title a>img {
-	width: 25px;
-}
+
+#nav-title a>img {width: 25px;}

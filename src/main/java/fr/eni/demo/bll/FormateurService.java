@@ -6,9 +6,9 @@ import fr.eni.demo.bo.Formateur;
 
 public interface FormateurService {
 	void add(String nom, String prenom, String email);
-
-	void add(Formateur formateur);
 	
+	void add(Formateur formateur);
+
 	List<Formateur> getFormateurs();
 	
 	Formateur findByEmail(String emailFormateur);

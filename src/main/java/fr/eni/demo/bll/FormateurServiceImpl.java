@@ -24,6 +24,15 @@ public class FormateurServiceImpl implements FormateurService {
 		Formateur formateur = new Formateur(nom, prenom, email);
 		formateurDAO.create(formateur);
 	}
+	
+	@Override
+	public void add(Formateur formateur) {
+		//unicité de l'email
+		Formateur formateurAvecEmailIdentique  = formateurDAO.read(formateur.getEmail());
+		if(formateurAvecEmailIdentique == null) {
+			formateurDAO.create(formateur);
+		}
+	}
 
 	@Override
 	public List<Formateur> getFormateurs() {
@@ -41,22 +50,13 @@ public class FormateurServiceImpl implements FormateurService {
 
 	@Override
 	public void updateCoursFormateur(String emailFormateur, long idCours) {
-		// Mise à jour au niveau BO
+		//Mise à jour au niveau BO
 		Formateur f = formateurDAO.read(emailFormateur);
-		Cours c = coursDAO.read(idCours);
+		Cours c = coursDAO.read(idCours);	
 		f.getListeCours().add(c);
-
-		// Mise à jour en base
+		
+		//Mise à jour en base
 		coursDAO.insertCoursFormateur(idCours, emailFormateur);
-	}
-
-	@Override
-	public void add(Formateur formateur) {
-		// unicité de l'email
-		Formateur formateurAvecEmailIdentique = formateurDAO.read(formateur.getEmail());
-		if (formateurAvecEmailIdentique == null) {
-			formateurDAO.create(formateur);
-		}
 	}
 
 }

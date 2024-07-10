@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 import fr.eni.demo.bll.CoursService;
 import fr.eni.demo.bo.Cours;
 
-@Component
+@Component // Définir le converter en tant que bean Spring
 public class StringToCoursConverter implements Converter<String, Cours> {
+
 	private CoursService service;
 
 	@Autowired
@@ -22,4 +23,4 @@ public class StringToCoursConverter implements Converter<String, Cours> {
 		Integer theId = Integer.parseInt(id);
 		return service.findById(theId);
 	}
-}	
+}
