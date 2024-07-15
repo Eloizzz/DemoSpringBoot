@@ -12,4 +12,6 @@ public interface FormateurDAO {
 	void update(Formateur formateur);
 
 	List<Formateur> findAll();
+
+	int uniqueEmail(String email) ;
 }

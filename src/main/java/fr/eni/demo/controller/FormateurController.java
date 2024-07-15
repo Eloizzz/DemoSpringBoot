@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import fr.eni.demo.bll.CoursService;
 import fr.eni.demo.bll.FormateurService;
 import fr.eni.demo.bo.Cours;
 import fr.eni.demo.bo.Formateur;
+import fr.eni.demo.exceptions.BusinessException;
 import jakarta.validation.Valid;
 
 //@Controller --> permet de définir la classe comme un bean Spring de type Controller
@@ -58,17 +60,28 @@ public class FormateurController {
 		if (bindingResult.hasErrors()) {
 			return "view-formateur-detail";
 		} else {
-			System.out.println("Le formateur récupéré depuis le formulaire : ");
-		
-		System.out.println(f);
 
-		// Sauvegarder les modifications
-		formateurService.update(f);
+			try {
+				System.out.println("Le formateur récupéré depuis le formulaire : ");
 
-		// Redirection l’affichage de tous les formateurs, en appelant la méthode
-		// afficherFormateurs
-		return "redirect:/formateurs";
+				System.out.println(f);
+
+				// Sauvegarder les modifications
+				formateurService.update(f);
+
+				return "redirect:/formateurs";
+			} catch (BusinessException e) {
+				// Afficher les messages d’erreur - il faut les injecter dans le contexte de
+				// BindingResult
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError("globalError", key);
+					bindingResult.addError(error);
+				});
+
+				return "view-formateur-detail";
+			}
 		}
+
 	}
 
 	// Méthode pour charger la liste des cours en session
@@ -87,7 +100,6 @@ public class FormateurController {
 		return "redirect:/formateurs/detail?email=" + email;
 	}
 
-	// Création d'un nouveau formateur
 	@GetMapping("/creer")
 	public String creerFormateur(Model model) {
 		Formateur formateur = new Formateur();
@@ -105,8 +117,19 @@ public class FormateurController {
 		if (bindingResult.hasErrors()) {
 			return "view-formateur-creer";
 		} else {
-			formateurService.add(formateur);
-			return "redirect:/formateurs";
+			try {
+				formateurService.add(formateur);
+				return "redirect:/formateurs";
+			} catch (BusinessException e) {
+				// Afficher les messages d’erreur - il faut les injecter dans le contexte de
+				// BindingResult
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError("globalError", key);
+					bindingResult.addError(error);
+				});
+
+				return "view-formateur-creer";
+			}
 		}
 	}
 

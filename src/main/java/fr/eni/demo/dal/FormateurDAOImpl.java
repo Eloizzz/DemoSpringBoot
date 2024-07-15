@@ -10,11 +10,13 @@ import fr.eni.demo.bo.Formateur;
 
 @Repository
 public class FormateurDAOImpl implements FormateurDAO {
+
 	private final String INSERT = "INSERT INTO FORMATEURS(email, nom, prenom) VALUES (:email, :nom, :prenom)";
 	private final String FIND_BY_EMAIL = "SELECT email, nom, prenom FROM FORMATEURS WHERE EMAIL = :email";
 	private final String FIND_ALL = "SELECT email, nom, prenom FROM FORMATEURS";
 	private final String UPDATE = "UPDATE FORMATEURS SET nom = :nom, prenom = :prenom WHERE email = :email";
-	
+	private final String COUNT_EMAIL = "SELECT count(email) FROM FORMATEURS WHERE email = :email";
+
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -24,6 +26,7 @@ public class FormateurDAOImpl implements FormateurDAO {
 		namedParameters.addValue("email", formateur.getEmail());
 		namedParameters.addValue("nom", formateur.getNom());
 		namedParameters.addValue("prenom", formateur.getPrenom());
+
 		namedParameterJdbcTemplate.update(INSERT, namedParameters);
 	}
 
@@ -36,6 +39,7 @@ public class FormateurDAOImpl implements FormateurDAO {
 	public Formateur read(String emailFormateur) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", emailFormateur);
+
 		return namedParameterJdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
 				new BeanPropertyRowMapper<>(Formateur.class));
 	}
@@ -46,6 +50,15 @@ public class FormateurDAOImpl implements FormateurDAO {
 		namedParameters.addValue("email", formateur.getEmail());
 		namedParameters.addValue("nom", formateur.getNom());
 		namedParameters.addValue("prenom", formateur.getPrenom());
+
 		namedParameterJdbcTemplate.update(UPDATE, namedParameters);
 	}
+
+	@Override
+	public int uniqueEmail(String email) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("email", email);
+		return namedParameterJdbcTemplate.queryForObject(COUNT_EMAIL, namedParameters, Integer.class);
+	}
+
 }

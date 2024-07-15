@@ -36,7 +36,7 @@ public class TestPreparedStatement {
 	void test01_InjectionSQL() {
 		// Imaginons un écran avec un champ pour saisir l'email du formateur recherché
 		// Voici la chaîne de caractères que l'utilisateur a saisie : 'a';delete from FORMATEURS
-		String saisieUtilisateur = "abaille@campus-eni.fr";
+		String saisieUtilisateur = "'abaille@campus-eni.fr';delete from FORMATEURS";
 		
 		Formateur f = findByEmail(saisieUtilisateur);
 		assertNotNull(f);
