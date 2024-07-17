@@ -1,12 +1,24 @@
-<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete(navigation)">
+<header xmlns:th="http://www.thymeleaf.org"
+	data-th-fragment="frag-entete(navigation)">
 	<section id="nav-title">
-		<h1><a href="/" data-th-text="#{frag-entete.h1}"></a></h1>
+		<h1>
+			<a href="/" data-th-text="#{frag-entete.h1}"></a>
+		</h1>
+		<!-- Pseudo et rôles de l'utilisateur via Spring Security Dialect -->
+		<!-- Uniquement si un utilisateur est connecté -->
+		<div class="header-card"
+			data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<span
+				data-th-text="#{frag-entete.security.pseudo} + ${#authentication.name}"></span>
+			<span
+				data-th-text="#{frag-entete.security.roles} + ${#authentication.principal.authorities}"></span>
+		</div>
 		<div>
-			<a href="/?language=fr"><img alt="Français" src="/images/French.webp"></a> 
-			<a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
+			<a href="/?language=fr"><img alt="Français"
+				src="/images/French.webp"></a> <a href="/?language=en"><img
+				alt="English" src="/images/English.webp"></a>
 		</div>
 	</section>
-
 	<!-- Intégration du fragment de navigation -->
 	<nav data-th-replace="${navigation}"></nav>
 </header>

@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 /* nav ul { */
 /*   display: flex; */
 /*   justify-content: space-between; */
@@ -68,4 +67,16 @@ main h1 {
 	text-align: center;
 }
 
-#nav-title a>img {width: 25px;}
+#nav-title a>img {
+	width: 25px;
+}
+
+/* Vignette pour afficher les données de sécurité */
+.header-card {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(82, 165, 165);
+	border-radius: 10px;
+	margin: 5px;
+	padding: 10px;
+}
